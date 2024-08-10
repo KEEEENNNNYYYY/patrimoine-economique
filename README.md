@@ -1,6 +1,8 @@
 # examen
 
-# CODE SOURCE REACT: /CLIENT/SRC/
+# STD23006
+
+# CODE SOURCE REACT: /CLIENT/SRC/UI
 
 #### prérequis:
 
@@ -30,4 +32,4 @@ Sitraka Andriatiana
 
 # NB4: Ny mila hita ao anaty vidéo dia: lancement serveur sy démo an'ilay page
 
-- NB5: à rendre avant Samedi 10 Août 2024
+# NB5: à rendre avant Samedi 10 Août 2024
