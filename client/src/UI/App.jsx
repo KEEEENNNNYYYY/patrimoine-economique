@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
-import data from '../src/data/data.json';
-import Possession from './models/possessions/Possession';
+import data from '../data/data.json';
+import Possession from "../models/possessions/Possession";
 import './App.css';
 
 const transformDataToPossessions = (data) => {
