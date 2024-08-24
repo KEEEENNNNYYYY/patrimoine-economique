@@ -2,7 +2,7 @@
 
 # STD23006
 
-# CODE SOURCE REACT: /CLIENT/SRC/UI
+# TO FIX : data.json format : possesseur + nom missing out = error on react page.
 
 #### prérequis:
 
