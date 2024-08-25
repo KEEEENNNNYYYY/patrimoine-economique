@@ -19,7 +19,7 @@
           "libelle": "MacBook Pro",
           "valeur": 4000000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
-          "dateFin": null,
+          "dateFin": "2024-08-25T12:09:59.718Z",
           "tauxAmortissement": 30
         },
         {
@@ -79,18 +79,6 @@
           "tauxAmortissement": null,
           "jour": 2,
           "valeurConstante": -300000
-        },
-        {
-          "libelle": "Nouveau MacBook Pro",
-          "valeur": 3000,
-          "dateDebut": "2024-01-01T00:00:00.000Z",
-          "taux": 20
-        },
-        {
-          "libelle": "Nouveau MacBoo666k Pro",
-          "valeur": 3000,
-          "dateDebut": "2025-01-01T00:00:00.000Z",
-          "taux": 2000
         }
       ]
     }
