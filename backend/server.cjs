@@ -21,19 +21,26 @@ function getPossessions() {
     }
 }
 
+
 /**
  * 
  * @example
  * utilisation:
  * 
+ * 
  * curl -X POST http://localhost:3000/possession \
- * -H "Content-Type: application/json" \
- * -d '{
- *     "libelle": "Nouveau MacBook Pro",
- *     "valeur": 3000,
- *     "dateDebut": "2024-01-01T00:00:00.000Z",
- *     "taux": 20
- * }
+  -H "Content-Type: application/json" \
+  -d '{
+    "possesseur": {
+      "nom": "John Doe"
+    },
+    "libelle": "MacBook Pro",
+    "valeur": 4000000,
+    "dateDebut": "2023-12-25T00:00:00.000Z",
+    "dateFin": null,
+    "tauxAmortissement": 30
+  }'
+
  */
 
 function addPossession(newPossession) {
