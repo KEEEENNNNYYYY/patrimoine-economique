@@ -75,27 +75,27 @@ function addPossession(newPossession) {
     -d '{"dateFin": "date de fin celon son format"}' `
 
  */
-function updatePossession(libelle, newDateFin) {
+async function updatePossession(libelle, newDateFin) {
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
-        const jsonData = JSON.parse(data);
-        const patrimoine = jsonData.find(item => item.model === 'Patrimoine');
+        const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(libelle)}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dateFin: newDateFin })
+        });
 
-        const possession = patrimoine.data.possessions.find(p => p.libelle === libelle);
-
-        if (possession) {
-            possession.dateFin = newDateFin;
-            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf8');
-            return possession;
-        } else {
-            throw new Error('Possession non trouvée');
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ${response.status}`);
         }
-    }
-    catch (err) {
-        console.error("Erreur dans l'édition du fichier JSON:", err);
-        throw err;
+
+        const data = await response.json();
+        console.log('Possession mise à jour:', data);
+    } catch (error) {
+        console.error('Erreur:', error);
     }
 }
+
 
 /**
  * 
@@ -149,7 +149,6 @@ app.post('/possession', (req, res) => {
 });
 
 app.patch('/possession/:libelle', (req, res) => {
-
     const libelle = req.params.libelle;
     const { dateFin } = req.body;
 
@@ -169,9 +168,9 @@ app.patch('/possession/:libelle', (req, res) => {
 });
 
 app.patch('/possession/:libelle/close', (req, res) => {
-    
+
     const libelle = req.params.libelle;
-    
+
     try {
         const closedPossession = closePossession(libelle);
         if (closedPossession) {
