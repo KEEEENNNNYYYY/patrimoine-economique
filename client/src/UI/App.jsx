@@ -3,6 +3,10 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import data from '../data/data.json';
 import Possession from "../models/possessions/Possession";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './header';
+import Patrimoine from './Patrimoine';
+import ListeDePossession from './ListPossession';
 import './App.css';
 
 const transformDataToPossessions = (data) => {
@@ -43,6 +47,15 @@ function App() {
 
   return (
     <>
+    <Router>
+      <div className='navbar'>
+        <Navbar />
+        <Routes>
+          <Route path="/patrimoine" element={<Patrimoine />} />
+          <Route path="/listePossession" element={<ListeDePossession />} />
+        </Routes>
+      </div>
+    </Router>
       <label>
         <h1>Liste de Patrimoine :</h1>
       </label>
