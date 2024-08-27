@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import data from '../data/data.json';
 import Possession from "../models/possessions/Possession";
@@ -7,7 +6,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './header';
 import Patrimoine from './Patrimoine';
 import ListeDePossession from './ListPossession';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import './App.css';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const transformDataToPossessions = (data) => {
   const possessionsData = data.find(item => item.model === "Patrimoine").data.possessions;
@@ -45,53 +48,69 @@ function App() {
     return info.reduce((total, poss) => total + poss.getValeur(currentDate), 0);
   };
 
+
+  const chartData = {
+    labels: info.map(pos => pos.libelle),
+    datasets: [
+      {
+        label: 'Valeur à la date T',
+        data: info.map(pos => pos.getValeur(currentDate)),
+        borderColor: 'green',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+      }
+    ]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: function(tooltipItem) {
+            return `${tooltipItem.label}: ${tooltipItem.raw.toFixed(2)} Ar`;
+          }
+        }
+      }
+    },
+    
+    elements: {
+      line: {
+        borderWidth: 2,
+      },
+      point: {
+        radius: 3, 
+      }
+    },
+  };
+
   return (
     <>
-    <Router>
-      <div className='navbar'>
-        <Navbar />
-        <Routes>
-          <Route path="/patrimoine" element={<Patrimoine />} />
-          <Route path="/listePossession" element={<ListeDePossession />} />
-        </Routes>
-      </div>
-    </Router>
+      <Router>
+        <div className='navbar'>
+          <Navbar />
+          <Routes>
+            <Route path="/patrimoine" element={<Patrimoine />} />
+            <Route path="/listePossession" element={<ListeDePossession />} />
+          </Routes>
+        </div>
+      </Router>
       <label>
-        <h1>Liste de Patrimoine :</h1>
+        <h1>Graphique du Patrimoine :</h1>
       </label>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Libelle</th>
-            <th>Valeur initiale</th>
-            <th>Date de debut</th>
-            <th>Date de fin</th>
-            <th>Amortissement</th>
-            <th>
-              Valeur à la date T: 
-              <label>
-                <input
-                  type="date"
-                  value={dateActuelle}
-                  onChange={handleDateActuelleChange}
-                />
-              </label>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {info.map((poss, index) => (
-            <tr key={index}>
-              <td>{poss.libelle}</td>
-              <td>{poss.valeur.toFixed(2)} Ar</td>
-              <td>{poss.dateDebut.toLocaleDateString()}</td>
-              <td>{poss.dateFin ? poss.dateFin.toLocaleDateString() : ''}</td>
-              <td>{poss.tauxAmortissement ? `${poss.tauxAmortissement}%` : ''}</td>
-              <td>{poss.getValeur(currentDate).toFixed(2)} Ar</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <div className="chart-container">
+        <Line data={chartData} options={chartOptions} />
+        <label>
+          <input
+            type="date"
+            value={dateActuelle}
+            onChange={handleDateActuelleChange}
+          />
+        </label>
+      </div>
       <h1>
         Estimation du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
       </h1>
