@@ -19,7 +19,7 @@
           "libelle": "MacBook Pro",
           "valeur": 4000000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
-          "dateFin": "2024-08-25T12:09:59.718Z",
+          "dateFin": null,
           "tauxAmortissement": 30
         },
         {
