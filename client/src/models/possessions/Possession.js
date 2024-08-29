@@ -2,7 +2,7 @@ export default class Possession {
   constructor(nom, libelle, valeur, dateDebut, dateFin, tauxAmortissement, jour = null, valeurConstante = null) {
     this.nom = nom;
     this.libelle = libelle;
-    this.valeur = valeur;
+    this.valeur = parseFloat(valeur); 
     this.dateDebut = dateDebut;
     this.dateFin = dateFin;
     this.tauxAmortissement = tauxAmortissement;
