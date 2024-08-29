@@ -37,6 +37,57 @@ function App() {
   const [dateActuelle, setDateActuelle] = useState(new Date().toISOString().split('T')[0]);
   const [editingPossession, setEditingPossession] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newPossession, setNewPossession] = useState({
+    libelle: '',
+    valeur: '',
+    dateDebut: '',
+    dateFin: '',
+    tauxAmortissement: ''
+  });
+
+  const handleAddModalChange = (event) => {
+    const { name, value } = event.target;
+    setNewPossession(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAddSave = async () => {
+    try {
+      const valeur = parseFloat(newPossession.valeur); 
+      if (isNaN(valeur)) {
+        throw new Error('La valeur doit être un nombre');
+      }
+
+      const response = await fetch('http://localhost:3000/possession', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          possesseur: { nom: 'John Doe' },
+          ...newPossession,
+          valeur,
+          dateDebut: new Date(newPossession.dateDebut).toISOString(),
+          dateFin: newPossession.dateFin ? new Date(newPossession.dateFin).toISOString() : null
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+
+      const addedPossession = await response.json();
+      setInfo(prevInfo => [...prevInfo, addedPossession]);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la possession:', error);
+    }
+  };
+
+
 
   useEffect(() => {
     const possessions = transformDataToPossessions(data);
@@ -102,31 +153,31 @@ function App() {
   };
 
   const handleSave = async () => {
-  try {
-    const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(editingPossession.libelle)}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        dateFin: editingPossession.dateFin,
-        valeur: editingPossession.valeur,
-        tauxAmortissement: editingPossession.tauxAmortissement
-      })
-    });
+    try {
+      const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(editingPossession.libelle)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          dateFin: editingPossession.dateFin,
+          valeur: editingPossession.valeur,
+          tauxAmortissement: editingPossession.tauxAmortissement
+        })
+      });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+
+      const updatedPossession = await response.json();
+      const updatedInfo = info.map(poss => (poss.libelle === editingPossession.libelle ? updatedPossession : poss));
+      setInfo(updatedInfo);
+      setShowModal(false);
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde des modifications:', error);
     }
-
-    const updatedPossession = await response.json();
-    const updatedInfo = info.map(poss => (poss.libelle === editingPossession.libelle ? updatedPossession : poss));
-    setInfo(updatedInfo);
-    setShowModal(false);
-  } catch (error) {
-    console.error('Erreur lors de la sauvegarde des modifications:', error);
-  }
-};
+  };
 
 
   const handleModalChange = (event) => {
@@ -185,17 +236,18 @@ function App() {
                   {info.map((poss, index) => (
                     <tr key={index}>
                       <td>{poss.libelle}</td>
-                      <td>{poss.valeur.toFixed(2)} Ar</td>
+                      <td>{typeof poss.valeur === 'number' ? poss.valeur.toFixed(2) : 'N/A'} Ar</td>
                       <td>{poss.dateDebut.toLocaleDateString()}</td>
                       <td>{poss.dateFin ? poss.dateFin.toLocaleDateString() : ''}</td>
                       <td>{poss.tauxAmortissement ? `${poss.tauxAmortissement}%` : ''}</td>
-                      <td>{poss.getValeur(currentDate).toFixed(2)} Ar</td>
+                      <td>{typeof poss.getValeur(currentDate) === 'number' ? poss.getValeur(currentDate).toFixed(2) : 'N/A'} Ar</td>
                       <td>
                         <Button variant="primary" onClick={() => handleEdit(poss)}>Edit</Button>
                         <Button variant="secondary" onClick={() => handleClose(index)}>Close</Button>
                       </td>
                     </tr>
                   ))}
+
                 </tbody>
               </Table>
               <h1>
@@ -259,6 +311,83 @@ function App() {
           </Modal.Footer>
         </Modal>
       </div>
+      <Button variant="success" onClick={() => setShowAddModal(true)}>
+        Ajouter une nouvelle possession
+      </Button>
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter une Nouvelle Possession</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="mb-3">
+              <label htmlFor="libelle" className="form-label">Libelle</label>
+              <input
+                type="text"
+                className="form-control"
+                id="libelle"
+                name="libelle"
+                value={newPossession.libelle}
+                onChange={handleAddModalChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="valeur" className="form-label">Valeur</label>
+              <input
+                type="number"
+                className="form-control"
+                id="valeur"
+                name="valeur"
+                value={newPossession.valeur}
+                onChange={handleAddModalChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="dateDebut" className="form-label">Date de début</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dateDebut"
+                name="dateDebut"
+                value={newPossession.dateDebut}
+                onChange={handleAddModalChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="dateFin" className="form-label">Date de fin (optionnelle)</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dateFin"
+                name="dateFin"
+                value={newPossession.dateFin}
+                onChange={handleAddModalChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="tauxAmortissement" className="form-label">Taux d'Amortissement</label>
+              <input
+                type="number"
+                className="form-control"
+                id="tauxAmortissement"
+                name="tauxAmortissement"
+                value={newPossession.tauxAmortissement}
+                onChange={handleAddModalChange}
+              />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+            Fermer
+          </Button>
+          <Button variant="primary" onClick={handleAddSave}>
+            Ajouter
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
     </Router>
   );
 }
