@@ -3,6 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const cors = require('cors');
+
+app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:5173' 
+}));
+
+
 /*
 const date = new Date();
 console.log (date);*/
@@ -75,27 +84,26 @@ function addPossession(newPossession) {
     -d '{"dateFin": "date de fin celon son format"}' `
 
  */
-async function updatePossession(libelle, newDateFin) {
+
+function updatePossession(libelle, newValues) {
     try {
-        const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(libelle)}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ dateFin: newDateFin })
-        });
+        const data = fs.readFileSync(filePath, 'utf8');
+        const jsonData = JSON.parse(data);
+        const patrimoine = jsonData.find(item => item.model === 'Patrimoine');
+        const possession = patrimoine.data.possessions.find(p => p.libelle === libelle);
 
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP ${response.status}`);
+        if (possession) {
+            Object.assign(possession, newValues);
+            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf8');
+            return possession;
+        } else {
+            throw new Error('Possession non trouvée');
         }
-
-        const data = await response.json();
-        console.log('Possession mise à jour:', data);
-    } catch (error) {
-        console.error('Erreur:', error);
+    } catch (err) {
+        console.error("Erreur lors de la mise à jour du fichier JSON:", err);
+        throw err;
     }
 }
-
 
 /**
  * 
@@ -130,7 +138,7 @@ function closePossession(libelle) {
 
 
 app.get('/', (req, res) => {
-    res.send('Bienvenue sur le serveur Express!');
+    res.send('serveur Express!');
 });
 
 app.get('/possession', (req, res) => {
@@ -150,22 +158,16 @@ app.post('/possession', (req, res) => {
 
 app.patch('/possession/:libelle', (req, res) => {
     const libelle = req.params.libelle;
-    const { dateFin } = req.body;
+    const newValues = req.body;
 
-    if (!dateFin) {
-        return res.status(400).json({ error: 'nouvelle date de fin requise.' });
-    }
     try {
-        const updatedPossession = updatePossession(libelle, dateFin);
-        if (updatedPossession) {
-            res.status(200).json(updatedPossession);
-        } else {
-            res.status(404).json({ error: 'Possession non trouvée' });
-        }
+        const updatedPossession = updatePossession(libelle, newValues);
+        res.status(200).json(updatedPossession);
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur lors de la mise à jour de la possession.' });
     }
 });
+
 
 app.patch('/possession/:libelle/close', (req, res) => {
 
