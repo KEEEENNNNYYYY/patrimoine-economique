@@ -101,16 +101,33 @@ function App() {
     setInfo(updatedInfo);
   };
 
-  const handleSave = () => {
-    const updatedInfo = info.map(poss => {
-      if (poss.id === editingPossession.id) {
-        return editingPossession;
-      }
-      return poss;
+  const handleSave = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(editingPossession.libelle)}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dateFin: editingPossession.dateFin,
+        valeur: editingPossession.valeur,
+        tauxAmortissement: editingPossession.tauxAmortissement
+      })
     });
+
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}`);
+    }
+
+    const updatedPossession = await response.json();
+    const updatedInfo = info.map(poss => (poss.libelle === editingPossession.libelle ? updatedPossession : poss));
     setInfo(updatedInfo);
     setShowModal(false);
-  };
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde des modifications:', error);
+  }
+};
+
 
   const handleModalChange = (event) => {
     const { name, value } = event.target;
