@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './header';
 import Patrimoine from './Patrimoine';
 import ListeDePossession from './ListPossession';
+import CreatePossessionPage from './create'; 
 import { Line } from 'react-chartjs-2';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
@@ -56,7 +57,7 @@ function App() {
 
   const handleAddSave = async () => {
     try {
-      const valeur = parseFloat(newPossession.valeur); 
+      const valeur = parseFloat(newPossession.valeur);
       if (isNaN(valeur)) {
         throw new Error('La valeur doit être un nombre');
       }
@@ -86,8 +87,6 @@ function App() {
       console.error('Erreur lors de l\'ajout de la possession:', error);
     }
   };
-
-
 
   useEffect(() => {
     const possessions = transformDataToPossessions(data);
@@ -179,7 +178,6 @@ function App() {
     }
   };
 
-
   const handleModalChange = (event) => {
     const { name, value } = event.target;
     setEditingPossession(prev => ({
@@ -211,6 +209,9 @@ function App() {
           <Route path="/possession" element={
             <div>
               <h1>Liste de Patrimoine :</h1>
+              <Button variant="success" onClick={() => window.location.href = '/possession/create'}>
+                Ajouter une nouvelle possession
+              </Button>
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -247,7 +248,6 @@ function App() {
                       </td>
                     </tr>
                   ))}
-
                 </tbody>
               </Table>
               <h1>
@@ -255,7 +255,8 @@ function App() {
               </h1>
             </div>
           } />
-          <Route path="/" element={<div>page d'accueil</div>} />
+          <Route path="/possession/create" element={<CreatePossessionPage />} />
+          <Route path="/" element={<div>Page d'accueil</div>} />
         </Routes>
 
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -310,84 +311,80 @@ function App() {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ajouter une Nouvelle Possession</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form>
+              <div className="mb-3">
+                <label htmlFor="libelle" className="form-label">Libelle</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="libelle"
+                  name="libelle"
+                  value={newPossession.libelle}
+                  onChange={handleAddModalChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="valeur" className="form-label">Valeur</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="valeur"
+                  name="valeur"
+                  value={newPossession.valeur}
+                  onChange={handleAddModalChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="dateDebut" className="form-label">Date de début</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="dateDebut"
+                  name="dateDebut"
+                  value={newPossession.dateDebut}
+                  onChange={handleAddModalChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="dateFin" className="form-label">Date de fin (optionnelle)</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="dateFin"
+                  name="dateFin"
+                  value={newPossession.dateFin}
+                  onChange={handleAddModalChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="tauxAmortissement" className="form-label">Taux d'Amortissement</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="tauxAmortissement"
+                  name="tauxAmortissement"
+                  value={newPossession.tauxAmortissement}
+                  onChange={handleAddModalChange}
+                />
+              </div>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+              Fermer
+            </Button>
+            <Button variant="primary" onClick={handleAddSave}>
+              Ajouter
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
-      <Button variant="success" onClick={() => setShowAddModal(true)}>
-        Ajouter une nouvelle possession
-      </Button>
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Ajouter une Nouvelle Possession</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="mb-3">
-              <label htmlFor="libelle" className="form-label">Libelle</label>
-              <input
-                type="text"
-                className="form-control"
-                id="libelle"
-                name="libelle"
-                value={newPossession.libelle}
-                onChange={handleAddModalChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="valeur" className="form-label">Valeur</label>
-              <input
-                type="number"
-                className="form-control"
-                id="valeur"
-                name="valeur"
-                value={newPossession.valeur}
-                onChange={handleAddModalChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="dateDebut" className="form-label">Date de début</label>
-              <input
-                type="date"
-                className="form-control"
-                id="dateDebut"
-                name="dateDebut"
-                value={newPossession.dateDebut}
-                onChange={handleAddModalChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="dateFin" className="form-label">Date de fin (optionnelle)</label>
-              <input
-                type="date"
-                className="form-control"
-                id="dateFin"
-                name="dateFin"
-                value={newPossession.dateFin}
-                onChange={handleAddModalChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="tauxAmortissement" className="form-label">Taux d'Amortissement</label>
-              <input
-                type="number"
-                className="form-control"
-                id="tauxAmortissement"
-                name="tauxAmortissement"
-                value={newPossession.tauxAmortissement}
-                onChange={handleAddModalChange}
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
-            Fermer
-          </Button>
-          <Button variant="primary" onClick={handleAddSave}>
-            Ajouter
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
     </Router>
   );
 }
