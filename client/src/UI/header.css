@@ -5,7 +5,10 @@ nav{
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    align-items: center;
+    align-content: center;
 }
+
 
 .nav-button{
     width: 20%;
@@ -21,4 +24,7 @@ a{
     text-align: center;
     align-items: center;
     justify-content: center;
+    color: orange;
+    font-size: x-large;
+    font-weight: 900;
 }
