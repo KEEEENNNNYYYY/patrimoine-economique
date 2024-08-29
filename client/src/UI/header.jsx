@@ -5,12 +5,8 @@ import './header.css';
 const Navbar = () => {
     return (
         <nav>
-            <button className="nav-button">
-                <Link to="/patrimoine">Patrimoine</Link>
-            </button>
-            <button className="nav-button">
-                <Link to="/ListPossession">Liste de Possession</Link>
-            </button>
+            <Link className="nav-button" to="/patrimoine">Patrimoine</Link>
+            <Link className="nav-button" to="/possession">Possession</Link>
         </nav>
     );
 };
