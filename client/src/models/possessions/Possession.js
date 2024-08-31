@@ -3,15 +3,19 @@ export default class Possession {
     this.nom = nom;
     this.libelle = libelle;
     this.valeur = parseFloat(valeur); 
-    this.dateDebut = dateDebut;
-    this.dateFin = dateFin;
+    this.dateDebut = new Date(dateDebut);
+    this.dateFin = dateFin ? new Date(dateFin) : null;
     this.tauxAmortissement = tauxAmortissement;
     this.jour = jour;
     this.valeurConstante = valeurConstante;
   }
 
   getValeur(currentDate) {
-    const dateDebut = new Date(this.dateDebut);
+    if (!(currentDate instanceof Date)) {
+      currentDate = new Date(currentDate); 
+    }
+
+    const dateDebut = this.dateDebut;
     const moisEcoules = (currentDate.getFullYear() - dateDebut.getFullYear()) * 12 + (currentDate.getMonth() - dateDebut.getMonth());
 
     if (this.dateFin && currentDate > this.dateFin) {
@@ -29,7 +33,6 @@ export default class Possession {
       valeurActuelle -= valeurActuelle * (this.tauxAmortissement / 100) * anneesEcoulees;
     }
 
-    return Math.max(valeurActuelle);
+    return Math.max(valeurActuelle); 
   }
 }
-
