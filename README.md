@@ -2,7 +2,7 @@
 
 # STD23006
 
-
+# TO DO: fix:update libelle,closing possession
 
 #### prérequis:
 
