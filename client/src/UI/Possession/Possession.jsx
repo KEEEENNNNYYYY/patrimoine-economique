@@ -87,11 +87,34 @@ const PossessionT = () => {
     setShowModal(true);
   };
 
-  const handleClose = (index) => {
-    const updatedInfo = [...info];
-    updatedInfo[index].dateFin = new Date();
-    setInfo(updatedInfo);
+  const handleClose = async (index) => {
+    try {
+      const updatedPossession = { ...info[index], dateFin: new Date() };
+
+      const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(updatedPossession.libelle)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          dateFin: updatedPossession.dateFin.toISOString()
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+
+      const updatedData = await response.json();
+      const updatedInfo = info.map((poss, i) => (i === index ? updatedData : poss));
+      setInfo(updatedInfo);
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la date de fin:', error);
+    } finally {
+      setShowModal(false); 
+    }
   };
+
 
   const handleSave = async () => {
     try {
