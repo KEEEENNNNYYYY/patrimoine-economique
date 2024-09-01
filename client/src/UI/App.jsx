@@ -29,13 +29,37 @@ function App() {
               <footer>
                 <svg xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg) translateY(-3px)' }} viewBox="0 0 1000 100" preserveAspectRatio="none">
                   <defs>
-                    <linearGradient id="grad1" x1="80%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style={{ stopColor: 'rgb(17, 0, 255)', stopOpacity: 1 }} />
                       <stop offset="100%" style={{ stopColor: 'pink', stopOpacity: 1 }} />
+                      <animate
+                        attributeName="x1"
+                        values="0%; 100%; 0%"
+                        dur="30s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="x2"
+                        values="0%; 60%; 0%"
+                        dur="1200s"
+                        repeatCount="indefinite"
+                      />
                     </linearGradient>
                     <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style={{ stopColor: 'pink', stopOpacity: 1 }} />
                       <stop offset="100%" style={{ stopColor: 'rgb(17, 0, 255)', stopOpacity: 1 }} />
+                      <animate
+                        attributeName="x1"
+                        values="0%; 50%; 0%"
+                        dur="30s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="x2"
+                        values="0%; 60%; 0%"
+                        dur="30s"
+                        repeatCount="indefinite"
+                      />
                     </linearGradient>
                   </defs>
                   <path fill="url(#grad1)" opacity="1" d="M473,67.3c-203.9,88.3-263.1-34-320.3,0C66,119.1,0,59.7,0,59.7V0h1000v59.7 c0,0-62.1,26.1-94.9,29.3c-32.8,3.3-62.8-12.3-75.8-22.1C806,49.6,745.3,8.7,694.9,4.7S492.4,59,473,67.3z" />
