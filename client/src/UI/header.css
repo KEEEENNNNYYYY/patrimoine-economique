@@ -24,6 +24,10 @@ body {
 .nav-home {
     width: 4.9%;
     height: 60%;
+    transition: all ease 0.5s;
+}
+.nav-home:hover{
+    transform: scale(1.2);
 }
 
 .home {
