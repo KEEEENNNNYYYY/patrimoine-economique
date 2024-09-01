@@ -64,21 +64,24 @@ const Patrimoine = () => {
   const dates = generateDatesBetween(dateDebut, dateFin);
 
   const chartData = {
-    labels: dates.map(date => date.toISOString().split('T')[0]),
-    datasets: [
-      {
-        label: 'Estimation du Patrimoine',
-        data: dates.map(date =>
-          info.reduce((total, pos) => {
-            return total + pos.getValeur(date);
-          }, 0)
-        ),
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-      }
-    ]
-  };
+  labels: dates.map(date => date.toISOString().split('T')[0]),
+  datasets: [
+    {
+      label: 'Estimation du Patrimoine',
+      data: dates.map(date =>
+        info.reduce((total, pos) => {
+          return total + pos.getValeur(date);
+        }, 0)
+      ),
+      borderColor: 'rgba(75, 192, 192, 1)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      fill: true,
+      tension: 0.5,
+      stepped: false, 
+    }
+  ]
+};
+
 
   const chartOptions = {
     responsive: true,
@@ -86,7 +89,6 @@ const Patrimoine = () => {
       legend: {
         position: 'top',
       },
-
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
@@ -99,12 +101,16 @@ const Patrimoine = () => {
       line: {
         borderWidth: 2,
         tension: 0.5,
+        borderCapStyle:"round",
+        borderJoinStyle:"round",
+        stepped:false, 
       },
       point: {
-        radius: 2,
+        radius: 0,
       }
     },
   };
+  
 
   return (
     <div>
