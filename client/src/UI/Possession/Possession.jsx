@@ -80,7 +80,10 @@ const PossessionT = () => {
   };
 
   const handleEdit = (possession) => {
-    setEditingPossession(possession);
+    setEditingPossession({
+      ...possession,
+      oldLibelle: possession.libelle
+    });
     setShowModal(true);
   };
 
@@ -92,16 +95,14 @@ const PossessionT = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(editingPossession.libelle)}`, {
+      const { oldLibelle, ...updatedData } = editingPossession;
+
+      const response = await fetch(`http://localhost:3000/possession/${encodeURIComponent(oldLibelle)}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          dateFin: editingPossession.dateFin,
-          valeur: editingPossession.valeur,
-          tauxAmortissement: editingPossession.tauxAmortissement
-        })
+        body: JSON.stringify(updatedData)
       });
 
       if (!response.ok) {
@@ -109,7 +110,8 @@ const PossessionT = () => {
       }
 
       const updatedPossession = await response.json();
-      const updatedInfo = info.map(poss => (poss.libelle === editingPossession.libelle ? updatedPossession : poss));
+
+      const updatedInfo = info.map(poss => (poss.libelle === oldLibelle ? updatedPossession : poss));
       setInfo(updatedInfo);
       setShowModal(false);
     } catch (error) {
@@ -171,8 +173,8 @@ const PossessionT = () => {
                 <tr key={index}>
                   <td>{poss.libelle}</td>
                   <td>{typeof poss.valeur === 'number' ? poss.valeur.toFixed(2) : 'N/A'} Ar</td>
-                  <td>{poss.dateDebut.toLocaleDateString()}</td>
-                  <td>{poss.dateFin ? poss.dateFin.toLocaleDateString() : ''}</td>
+                  <td>{poss.dateDebut instanceof Date ? poss.dateDebut.toLocaleDateString() : 'N/A'}</td>
+                  <td>{poss.dateFin instanceof Date ? poss.dateFin.toLocaleDateString() : ''}</td>
                   <td>{poss.tauxAmortissement ? `${poss.tauxAmortissement}%` : ''}</td>
                   <td>{typeof poss.getValeur(dateActuelle) === 'number' ? poss.getValeur(dateActuelle).toFixed(2) : 'N/A'} Ar</td>
                   <td>
@@ -252,17 +254,6 @@ const PossessionT = () => {
         </Modal.Header>
         <Modal.Body>
           <form>
-            <div className="mb-3">
-              <label htmlFor="libelle" className="form-label">Libelle</label>
-              <input
-                type="text"
-                className="form-control"
-                id="libelle"
-                name="libelle"
-                value={newPossession.libelle}
-                onChange={handleAddModalChange}
-              />
-            </div>
             <div className="mb-3">
               <label htmlFor="valeur" className="form-label">Valeur</label>
               <input
