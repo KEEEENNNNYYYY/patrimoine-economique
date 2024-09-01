@@ -214,7 +214,7 @@ const PossessionT = () => {
           </tbody>
         </Table>
         <h1>
-          Estimation du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
+          Estimation actuelle du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
         </h1>
       </div>
 
