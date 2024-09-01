@@ -2,7 +2,6 @@
 
 # STD23006
 
-# TO DO: fix:closing possession
 
 #### prérequis:
 
