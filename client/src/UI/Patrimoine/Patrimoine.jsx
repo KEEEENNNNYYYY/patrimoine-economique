@@ -3,6 +3,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import data from '../../data/data.json';
 import Possession from "../../models/possessions/Possession";
+import './Patrimoine.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -64,23 +65,23 @@ const Patrimoine = () => {
   const dates = generateDatesBetween(dateDebut, dateFin);
 
   const chartData = {
-  labels: dates.map(date => date.toISOString().split('T')[0]),
-  datasets: [
-    {
-      label: 'Estimation du Patrimoine',
-      data: dates.map(date =>
-        info.reduce((total, pos) => {
-          return total + pos.getValeur(date);
-        }, 0)
-      ),
-      borderColor: 'rgba(75, 192, 192, 1)',
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      fill: true,
-      tension: 0.5,
-      stepped: false, 
-    }
-  ]
-};
+    labels: dates.map(date => date.toISOString().split('T')[0]),
+    datasets: [
+      {
+        label: 'Estimation du Patrimoine',
+        data: dates.map(date =>
+          info.reduce((total, pos) => {
+            return total + pos.getValeur(date);
+          }, 0)
+        ),
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.5,
+        stepped: false,
+      }
+    ]
+  };
 
 
   const chartOptions = {
@@ -101,38 +102,51 @@ const Patrimoine = () => {
       line: {
         borderWidth: 2,
         tension: 0.5,
-        borderCapStyle:"round",
-        borderJoinStyle:"round",
-        stepped:false, 
+        borderCapStyle: "round",
+        borderJoinStyle: "round",
+        stepped: false,
       },
       point: {
-        radius: 0,
+        radius: 2,
       }
     },
   };
-  
+
 
   return (
     <div>
-      <h1>Graphique du Patrimoine :</h1>
+      <div className="headContainer">
+        <h1 className='patrimoineIntro'>Graphique du Patrimoine :</h1>
+        <div className='mainContainer'>
+          <div className="pseudoContainer">
+            <label>Date de Début:
+              <div className="date-wrapper">
+                <input
+                  type="date"
+                  value={dateDebut}
+                  onChange={handleDateDebutChange}
+                  className='date-input'
+                />
+              </div>
+            </label>
+          </div>
+          <div className="pseudoContainer">
+            <label>Date de Fin:
+              <div className="date-wrapper">
+                <input
+                  type="date"
+                  value={dateFin}
+                  onChange={handleDateFinChange}
+                  className='date-input'
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <div className="chart-container">
         <Line data={chartData} options={chartOptions} />
-        <div>
-          <label>Date de Début:
-            <input
-              type="date"
-              value={dateDebut}
-              onChange={handleDateDebutChange}
-            />
-          </label>
-          <label>Date de Fin:
-            <input
-              type="date"
-              value={dateFin}
-              onChange={handleDateFinChange}
-            />
-          </label>
-        </div>
       </div>
     </div>
   );
