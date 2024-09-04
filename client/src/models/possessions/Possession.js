@@ -2,7 +2,7 @@ export default class Possession {
   constructor(nom, libelle, valeur, dateDebut, dateFin, tauxAmortissement, jour = null, valeurConstante = null) {
     this.nom = nom;
     this.libelle = libelle;
-    this.valeur = parseFloat(valeur); 
+    this.valeur = parseFloat(valeur);
     this.dateDebut = new Date(dateDebut);
     this.dateFin = dateFin ? new Date(dateFin) : null;
     this.tauxAmortissement = tauxAmortissement;
@@ -12,27 +12,31 @@ export default class Possession {
 
   getValeur(currentDate) {
     if (!(currentDate instanceof Date)) {
-      currentDate = new Date(currentDate); 
+      currentDate = new Date(currentDate);
     }
 
     const dateDebut = this.dateDebut;
-    const moisEcoules = (currentDate.getFullYear() - dateDebut.getFullYear()) * 12 + (currentDate.getMonth() - dateDebut.getMonth());
+    const dateFin = this.dateFin;
 
-    if (this.dateFin && currentDate > this.dateFin) {
+    const joursEcoules = Math.floor((currentDate - dateDebut) / (1000 * 60 * 60 * 24));
+    if (dateFin && currentDate > dateFin) {
       return 0;
     }
 
     let valeurActuelle = this.valeur;
 
     if (this.valeurConstante !== null && this.jour !== null) {
-      valeurActuelle += this.valeurConstante * moisEcoules;
+      const debutDuMoisActuel = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+      const moisEcoulesDepuisDebut = (debutDuMoisActuel.getFullYear() - dateDebut.getFullYear()) * 12 + (debutDuMoisActuel.getMonth() - dateDebut.getMonth());
+      
+      valeurActuelle += this.valeurConstante * moisEcoulesDepuisDebut;
     }
 
     if (this.tauxAmortissement) {
-      const anneesEcoulees = moisEcoules / 12;
-      valeurActuelle -= valeurActuelle * (this.tauxAmortissement / 100) * anneesEcoulees;
+      const tauxJournalier = this.tauxAmortissement / 100 / 365;
+      valeurActuelle -= valeurActuelle * tauxJournalier * joursEcoules;
     }
 
-    return Math.max(valeurActuelle); 
+    return Math.max(valeurActuelle);
   }
 }
