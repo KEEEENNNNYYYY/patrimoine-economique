@@ -2,6 +2,7 @@
 
 # STD23006
 
+# To do: date picker background too flashy , should use github color
 
 #### prérequis:
 
