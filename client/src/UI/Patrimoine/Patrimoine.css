@@ -1,0 +1,70 @@
+.headContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 15dvh;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
+}
+
+.pseudoContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 50%;
+    justify-content: center;
+}
+
+.patrimoineIntro {
+    padding-left: 5%;
+    padding-top: 2%;
+    margin-bottom: 2.5%;
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, rgba(255, 192, 203, 0.904) 20%, rgb(100, 90, 241) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+label {
+    color: rgb(233, 233, 233);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+
+.date-wrapper {
+    border: 1px solid rgb(100, 90, 241);
+    width: 150px;
+    height: 7.5dvh;
+    border-radius: 20px;
+    background: linear-gradient(45deg, rgba(255, 192, 203, 0.904) 20%, rgb(100, 90, 241) 100%);
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    box-sizing: border-box;
+}
+
+.date-input {
+    border: none;
+    background: transparent;
+    width: 90%;
+    height: 100%;
+    font-size: 1em;
+    color: #000;
+    outline: none;
+}
+.chart-container{
+    width: 100dvw;
+    height: 85dvh;
+}
