@@ -17,7 +17,7 @@ function App() {
           <Route path="/possession/create" element={<CreatePossessionPage />} />
           <Route path="/" element={
             <div className='landingPage'>
-              <h1>
+              <h1 className='h1'>
                 Examen Web2 : Patrimoine Economique
               </h1>
               <div className="author">
