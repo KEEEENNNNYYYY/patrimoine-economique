@@ -42,13 +42,13 @@ label {
     font-weight: 500;
 }
 
-
+ 
 .date-wrapper {
     border: 1px solid rgb(100, 90, 241);
     width: 150px;
     height: 7.5dvh;
     border-radius: 20px;
-    background: linear-gradient(45deg, rgba(255, 192, 203, 0.904) 20%, rgb(100, 90, 241) 100%);
+    background: linear-gradient(45deg, #d2a8ff 20%, #a5d6ff 100%);
     display: flex;
     align-items: center;
     padding-left: 5%;
