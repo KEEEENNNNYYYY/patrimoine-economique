@@ -18,10 +18,15 @@ export default class Possession {
     const dateDebut = this.dateDebut;
     const dateFin = this.dateFin;
 
-    const joursEcoules = Math.floor((currentDate - dateDebut) / (1000 * 60 * 60 * 24));
+    if (currentDate < dateDebut) {
+      return 0;
+    }
+
     if (dateFin && currentDate > dateFin) {
       return 0;
     }
+
+    const joursEcoules = Math.floor((currentDate - dateDebut) / (1000 * 60 * 60 * 24));
 
     let valeurActuelle = this.valeur;
 
@@ -37,6 +42,6 @@ export default class Possession {
       valeurActuelle -= valeurActuelle * tauxJournalier * joursEcoules;
     }
 
-    return Math.max(valeurActuelle);
+    return Math.max(valeurActuelle, 0); // Assurer que la valeur est au moins 0
   }
 }
