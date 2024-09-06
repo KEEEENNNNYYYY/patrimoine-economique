@@ -5,6 +5,7 @@ import data from '../../data/data.json';
 import Possession from "../../models/possessions/Possession";
 import './Patrimoine.css';
 
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const transformDataToPossessions = (data) => {
@@ -28,6 +29,10 @@ const Patrimoine = () => {
   const [info, setInfo] = useState([]);
   const [dateDebut, setDateDebut] = useState(() => localStorage.getItem('dateDebut') || new Date().toISOString().split('T')[0]);
   const [dateFin, setDateFin] = useState(() => localStorage.getItem('dateFin') || new Date().toISOString().split('T')[0]);
+  const [dateActuelle, setDateActuelle] = useState(new Date().toISOString().split('T')[0]);
+  const handleDateActuelleChange = (event) => {
+    setDateActuelle(event.target.value);
+  };
 
   useEffect(() => {
     const possessions = transformDataToPossessions(data);
@@ -60,6 +65,9 @@ const Patrimoine = () => {
       currentDate.setDate(currentDate.getDate() + 1);
     }
     return dates;
+  };
+  const calculerSommeTotale = () => {
+    return info.reduce((total, poss) => total + poss.getValeur(dateActuelle), 0);
   };
 
   const dates = generateDatesBetween(dateDebut, dateFin);
@@ -101,7 +109,7 @@ const Patrimoine = () => {
     elements: {
       line: {
         borderWidth: 2,
-        tension:0.5,
+        tension: 0.5,
         borderCapStyle: "round",
         borderJoinStyle: "round",
         stepped: false,
@@ -148,6 +156,16 @@ const Patrimoine = () => {
       <div className="chart-container">
         <Line data={chartData} options={chartOptions} />
       </div>
+      <label>
+        <input
+          type="date"
+          value={dateActuelle}
+          onChange={handleDateActuelleChange}
+        />
+      </label>
+      <h1>
+        Estimation actuelle du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
+      </h1>
     </div>
   );
 };
