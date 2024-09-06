@@ -74,8 +74,8 @@ const Patrimoine = () => {
             return total + pos.getValeur(date);
           }, 0)
         ),
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: '#d2a8ff',
+        backgroundColor: ' #a5d6ff',
         fill: true,
         tension: 0.5,
         stepped: false,
@@ -101,7 +101,7 @@ const Patrimoine = () => {
     elements: {
       line: {
         borderWidth: 2,
-        tension: 0.5,
+        tension:0.5,
         borderCapStyle: "round",
         borderJoinStyle: "round",
         stepped: false,
