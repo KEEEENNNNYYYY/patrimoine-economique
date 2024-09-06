@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import data from '../../data/data.json';
 import Possession from '../../models/possessions/Possession';
+import './Possession.css';
 
 const transformDataToPossessions = (data) => {
   const possessionsData = data.find(item => item.model === "Patrimoine")?.data?.possessions || [];
@@ -164,12 +165,12 @@ const PossessionT = () => {
 
   return (
     <>
-      <Button variant="success" as={Link} to="/possession/create">
+      <Button variant="success" as={Link} to="/possession/create" className='Succes'>
         Ajouter une nouvelle possession
       </Button>
       <div>
-        <h1>Liste de Patrimoine :</h1>
-        <Table striped bordered hover>
+        <h1 className='Value'>Liste de Patrimoine :</h1>
+        <Table striped bordered hover className='transparent-table'>
           <thead>
             <tr>
               <th>Libelle</th>
@@ -213,7 +214,7 @@ const PossessionT = () => {
             )}
           </tbody>
         </Table>
-        <h1>
+        <h1 className='Value'>
           Estimation actuelle du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
         </h1>
       </div>
