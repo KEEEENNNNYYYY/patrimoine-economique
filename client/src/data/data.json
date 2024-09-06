@@ -19,11 +19,8 @@
           "libelle": "MacBook Pro",
           "valeur": 4300000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
-          "dateFin": "2024-10-24",
-          "tauxAmortissement": 5,
-          "nom": "John Doe",
-          "jour": null,
-          "valeurConstante": null
+          "dateFin": null,
+          "tauxAmortissement": 5
         },
         {
           "possesseur": {
@@ -73,24 +70,11 @@
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Redmi Note 9 (lost)",
+          "libelle": "Redmi Note 9",
           "valeur": 800000,
           "dateDebut": "2022-12-29T00:00:00.000Z",
           "dateFin": null,
           "tauxAmortissement": 15,
-          "nom": "John Doe",
-          "jour": null,
-          "valeurConstante": null
-        },
-        {
-          "possesseur": {
-            "nom": "John Doe"
-          },
-          "libelle": "samsung galaxie s23 (gifted)",
-          "valeur": 1600000,
-          "dateDebut": "2024-09-20T00:00:00.000Z",
-          "dateFin": "2024-10-31",
-          "tauxAmortissement": "10",
           "nom": "John Doe",
           "jour": null,
           "valeurConstante": null
