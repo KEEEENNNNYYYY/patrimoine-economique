@@ -1,0 +1,31 @@
+.transparent-table {
+    background-color: transparent;
+}
+
+.transparent-table th,
+.transparent-table td {
+    background-color: transparent;
+    color: white;
+}
+
+
+.transparent-table thead th,
+.transparent-table tbody td {
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.Value {
+    color: white;
+    padding-left: 5%;
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, rgba(255, 192, 203, 0.904) 10%, rgb(100, 90, 241) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.Succes {
+    margin-left: 80%;
+}
