@@ -14,7 +14,7 @@
 #### to do 2 :
 # Patrimoine
 
-## TODO: Avant 30/08/2024 08:00 GMT+3
+## TODO: Avant 07/09/2024 08:00 GMT+3
 
 1. *Fonctionnalités à finaliser :*
    - Page patrimoine avec un graphique et le calcul de la valeur du patrimoine à une date donnée.
