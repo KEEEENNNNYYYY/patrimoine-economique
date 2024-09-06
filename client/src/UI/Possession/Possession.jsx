@@ -82,7 +82,8 @@ const PossessionT = () => {
   const handleEdit = (possession) => {
     setEditingPossession({
       ...possession,
-      oldLibelle: possession.libelle
+      oldLibelle: possession.libelle,
+      dateFin: possession.dateFin ? possession.dateFin.toISOString().split('T')[0] : ''
     });
     setShowModal(true);
   };
@@ -114,7 +115,6 @@ const PossessionT = () => {
       setShowModal(false); 
     }
   };
-
 
   const handleSave = async () => {
     try {
@@ -255,6 +255,17 @@ const PossessionT = () => {
                   id="tauxAmortissement"
                   name="tauxAmortissement"
                   value={editingPossession.tauxAmortissement}
+                  onChange={handleModalChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="dateFin" className="form-label">Date de Fin</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="dateFin"
+                  name="dateFin"
+                  value={editingPossession.dateFin}
                   onChange={handleModalChange}
                 />
               </div>
