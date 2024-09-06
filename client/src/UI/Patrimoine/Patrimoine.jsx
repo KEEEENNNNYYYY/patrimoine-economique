@@ -118,7 +118,26 @@ const Patrimoine = () => {
         radius: 2,
       }
     },
+    scales: {
+      x: {
+        ticks: {
+          color: '#ffffff'
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0)'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#ffffff'
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.2)'
+        }
+      }
+    }
   };
+
 
 
   return (
@@ -156,14 +175,23 @@ const Patrimoine = () => {
       <div className="chart-container">
         <Line data={chartData} options={chartOptions} />
       </div>
-      <label>
-        <input
-          type="date"
-          value={dateActuelle}
-          onChange={handleDateActuelleChange}
-        />
-      </label>
-      <h1>
+      <hr className='hr'/>
+      <h1 className='Value pT5'>
+        Date de calcule :
+      </h1>
+      <div className="pseudoContainer">
+        <label>Date de Début:
+          <div className="date-wrapper">
+            <input
+              type="date"
+              value={dateActuelle}
+              onChange={handleDateActuelleChange}
+              className="date-input"
+            />
+          </div>
+        </label>
+      </div>
+      <h1 className='Value'>
         Estimation actuelle du Patrimoine: {calculerSommeTotale().toFixed(2)} Ar
       </h1>
     </div>
